@@ -13,6 +13,10 @@ import Starscream
 class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
 
 
+    // chart added Tag:27
+    let tagViewChart: Int = 27
+
+
     /*
      Starscream let & var
      */
@@ -148,6 +152,11 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         print("arrDoube in viewDidLayoutSubviews(): \(arrDouble)")
 
 
+//        if view.subviews.contains(chart) {
+//            chart.removeFromSuperview()
+//        }
+
+
         chart = CandleStickChartView(frame: CGRect(x: 0, y: view.safeAreaInsets.bottom, width: view.frame.width, height: 500))
 
         print(view.safeAreaInsets.top)
@@ -155,10 +164,9 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         chart.data = candleStickData
 
 
-
+        // delete CandleStickChartView Using Tag:27 before Rerendering
+        chart.tag = tagViewChart
         self.view.addSubview(chart)
-
-
 
     }
 
@@ -367,8 +375,14 @@ extension ViewController: WebSocketDelegate {
         }
 
         print(arrDouble)
+        chart.removeFromSuperview()
 
 
+
+
+        // delete CandleStickChartView Using Tag:27 before Rerendering
+        var fetchedViewB = view.viewWithTag(27)
+        fetchedViewB?.removeFromSuperview()
         viewDidLayoutSubviews()
 
 
