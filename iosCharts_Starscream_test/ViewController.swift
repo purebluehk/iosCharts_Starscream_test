@@ -68,23 +68,6 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     override func viewDidLoad() {
         super.viewDidLoad()
 
-    }
-
-
-
-    // ****************************************************
-    // viewDidLayoutSubviews()
-    // ****************************************************
-
-    override func  viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-
-
-
-        // Viewの背景色を白にする.
-        self.view.backgroundColor = UIColor.white
-
-
         // ******************** Segment Controller *************************
         // SegmentedControlを作成する.
 
@@ -95,6 +78,9 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
 
         // イベントを追加する.
         mySegemntController.addTarget(self, action: #selector(ViewController.segconChanged(segcon:)), for: UIControl.Event.valueChanged)
+
+
+
 
         // Viewに追加する.
         self.view.addSubview(mySegemntController)
@@ -123,6 +109,30 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
 
 
 
+    }
+
+
+
+    // ****************************************************
+    // viewDidLayoutSubviews()
+    // ****************************************************
+
+    override func  viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+
+
+        // Viewの背景色を白にする.
+        self.view.backgroundColor = UIColor.white
+
+//        // subViewsを一旦削除する
+//        for subview in self.view.subviews {
+//            subview.removeFromSuperview()
+//            print("subView Delete: \(subview)")
+//        }
+
+        
+
 
         // **********************************************************
         /*
@@ -143,6 +153,8 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         print(view.safeAreaInsets.top)
 
         chart.data = candleStickData
+
+
 
         self.view.addSubview(chart)
 
@@ -215,6 +227,8 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
 
             let a = getCVCBTC(intervalLabel: "\(myArray[mySegLabel])", instrunemtName: "\(myValues[rowArray])")
             self.socket.write(string: a.getBTCETH_1m())
+
+
         }
     }
 
@@ -353,6 +367,9 @@ extension ViewController: WebSocketDelegate {
         }
 
         print(arrDouble)
+
+
+        viewDidLayoutSubviews()
 
 
 
