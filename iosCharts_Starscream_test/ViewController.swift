@@ -378,8 +378,6 @@ extension ViewController: WebSocketDelegate {
         chart.removeFromSuperview()
 
 
-
-
         // delete CandleStickChartView Using Tag:27 before Rerendering
         var fetchedViewB = view.viewWithTag(27)
         fetchedViewB?.removeFromSuperview()
