@@ -10,5 +10,6 @@ target 'iosCharts_Starscream_test' do
 
  pod 'Charts'
  pod 'Starscream'
+ pod 'SwiftyJSON'
 
 end

@@ -3,20 +3,24 @@ PODS:
     - Charts/Core (= 3.2.1)
   - Charts/Core (3.2.1)
   - Starscream (3.0.6)
+  - SwiftyJSON (4.2.0)
 
 DEPENDENCIES:
   - Charts
   - Starscream
+  - SwiftyJSON
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Charts
     - Starscream
+    - SwiftyJSON
 
 SPEC CHECKSUMS:
   Charts: f122fb70b19847fa5817d018b77d6c5a2296ab25
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
+  SwiftyJSON: c4bcba26dd9ec7a027fc8eade48e2c911f229e96
 
-PODFILE CHECKSUM: d3c6aa8634dbbb0e9106c8e977468f2458bc8564
+PODFILE CHECKSUM: 15472990570a604bdb3db601143ab39fc7c4d482
 
 COCOAPODS: 1.5.3
