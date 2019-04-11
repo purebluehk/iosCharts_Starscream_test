@@ -9,6 +9,7 @@
 import UIKit
 import Charts
 import Starscream
+import SwiftyJSON
 
 class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
 
@@ -110,8 +111,6 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
 
         // Starscream set
         socket.delegate = self as WebSocketDelegate
-
-
 
     }
 
@@ -245,6 +244,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     //*********************************************
 
 
+
     //*********************************************
     //        Starscream
     //*********************************************
@@ -307,72 +307,92 @@ extension ViewController: WebSocketDelegate {
         // **********************************************
         print("got some text: \(String(describing: text))")  // print got text
 
+        guard let data = text.data(using: .utf8) else {
+            print("Can't convert textString to UTF8 data")
+            return
+        }
 
-//        // Change Type to DataType in order to use ".jsonObject" Method
-//        //            let textData = text.data(using: .utf8)!
-//
-//
-//        // Cutting Start Index
-//        let loc_o_first = text.index(text.index(of: "o")!, offsetBy: 5)
-//        //            print(loc_o_first)
-//
-//
-//        let subString_o_with_suffix = text.suffix(from: loc_o_first)
-//        //            print(subString_o_with_suffix)
-//
-//
-//        // Cutting End Index
-//        let loc_o_last = subString_o_with_suffix.index(subString_o_with_suffix.endIndex, offsetBy: -3)
-//        //            print(loc_o_last)
-//
-//        let sub_o_String = subString_o_with_suffix.prefix(upTo: loc_o_last)
-//        //            print(sub_o_String)
-//
-//        var sub_o = sub_o_String
-//
-//        var count: Int = 0
-//        arrDouble = [[Double]]()
-//
-//
-//        var lastParenticeIndex = sub_o.index(sub_o.index(of: "]")!, offsetBy: -1)
-//
-//        sub_o = sub_o + "zz" // 文字列の末尾にzを追加
-//
-//        //            print("sub_o before while文 : \(sub_o)")
-//
-//
-//        while  true {
-//
-//
-//            lastParenticeIndex = sub_o.index(sub_o.index(of: "]")!, offsetBy: -1)
-//            var subTex : String = String(sub_o.prefix(upTo: lastParenticeIndex))
-//
-//            subTex = String(subTex.dropFirst())  // "["を取り除く
-//
-//            var subArr = subTex.components(separatedBy: ",")  // ","で分けてArrayを作る
-//
-//            var subArrDouble : [Double] = subArr.map {Double($0)!}  // 部分Arrayの要素をDoubleに変換する
-//
-//            //                print("subArrDouble:\(subArrDouble)")
-//            //                print(type(of: subArrDouble))
-//
-//
-//            arrDouble.append(subArrDouble)
-//            //                print("arrDouble: \(arrDouble), count:\(count)")
-//
-//
-//            var suffix = String(sub_o.suffix(from: sub_o.index(sub_o.index(of: "]")!, offsetBy: 1)))
-//            if suffix == "zz" {
-//                break
-//            } else {
-//                sub_o = suffix.dropFirst()
-//                //                    print("if文のsub_o:  \(sub_o)")
-//            }
-//
-//            count += 1
+//        guard let json = JSON(data: data) else {
+//            return
 //        }
-//
-//        print(arrDouble)
+
+
+
+        guard let json = try? JSON(data: data) else {
+            return
+        }
+
+//        guard let arrDouble = json["o"] as [[Double]] else {
+//            return
+//        }
+
+
+
+        // Change Type to DataType in order to use ".jsonObject" Method
+        //            let textData = text.data(using: .utf8)!
+
+
+        // Cutting Start Index
+        let loc_o_first = text.index(text.index(of: "o")!, offsetBy: 5)
+        //            print(loc_o_first)
+
+
+        let subString_o_with_suffix = text.suffix(from: loc_o_first)
+        //            print(subString_o_with_suffix)
+
+
+        // Cutting End Index
+        let loc_o_last = subString_o_with_suffix.index(subString_o_with_suffix.endIndex, offsetBy: -3)
+        //            print(loc_o_last)
+
+        let sub_o_String = subString_o_with_suffix.prefix(upTo: loc_o_last)
+        //            print(sub_o_String)
+
+        var sub_o = sub_o_String
+
+        var count: Int = 0
+        arrDouble = [[Double]]()
+
+
+        var lastParenticeIndex = sub_o.index(sub_o.index(of: "]")!, offsetBy: -1)
+
+        sub_o = sub_o + "zz" // 文字列の末尾にzを追加
+
+        //            print("sub_o before while文 : \(sub_o)")
+
+
+        while  true {
+
+
+            lastParenticeIndex = sub_o.index(sub_o.index(of: "]")!, offsetBy: -1)
+            var subTex : String = String(sub_o.prefix(upTo: lastParenticeIndex))
+
+            subTex = String(subTex.dropFirst())  // "["を取り除く
+
+            var subArr = subTex.components(separatedBy: ",")  // ","で分けてArrayを作る
+
+            var subArrDouble : [Double] = subArr.map {Double($0)!}  // 部分Arrayの要素をDoubleに変換する
+
+            //                print("subArrDouble:\(subArrDouble)")
+            //                print(type(of: subArrDouble))
+
+
+            arrDouble.append(subArrDouble)
+            //                print("arrDouble: \(arrDouble), count:\(count)")
+
+
+            var suffix = String(sub_o.suffix(from: sub_o.index(sub_o.index(of: "]")!, offsetBy: 1)))
+            if suffix == "zz" {
+                break
+            } else {
+                sub_o = suffix.dropFirst()
+                //                    print("if文のsub_o:  \(sub_o)")
+            }
+
+            count += 1
+        }
+
+        print(arrDouble)
 
 
 
@@ -380,7 +400,7 @@ extension ViewController: WebSocketDelegate {
         chart.removeFromSuperview()  // Chartに新しいデータを呼び出した際に、前のChartをViewから削除する
 
 
-        // delete CandleStickChartView Using Tag:27 before Rerendering
+        // delete CandleStickChartView Using Tag:27 before Rendering
         var fetchedViewB = view.viewWithTag(27)
         fetchedViewB?.removeFromSuperview()
         viewDidLayoutSubviews()
@@ -479,26 +499,26 @@ extension ViewController: WebSocketDelegate {
 
 
 // ******************************************
-struct AnyDecodable : Decodable {
-    let value : Any
-
-    init<T>(_ value :T?) {
-        self.value = value ?? ()
-    }
-
-    init(from decoder :Decoder) throws {
-        let container = try decoder.singleValueContainer()
-
-        if let string = try? container.decode(String.self) {
-            self.init(string)
-        } else if let int = try? container.decode(Int.self) {
-            self.init(int)
-        } else {
-            self.init(())
-        }
-    }
-
-}
+//struct AnyDecodable : Decodable {
+//    let value : Any
+//
+//    init<T>(_ value :T?) {
+//        self.value = value ?? ()
+//    }
+//
+//    init(from decoder :Decoder) throws {
+//        let container = try decoder.singleValueContainer()
+//
+//        if let string = try? container.decode(String.self) {
+//            self.init(string)
+//        } else if let int = try? container.decode(Int.self) {
+//            self.init(int)
+//        } else {
+//            self.init(())
+//        }
+//    }
+//
+//}
 
 
 
